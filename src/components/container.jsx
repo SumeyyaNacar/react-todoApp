@@ -5,22 +5,24 @@ import { TodoItem } from "./todo-item";
 import { Title } from "./title";
 
 export const Container = () => {
-
- 
+  //state üzerinden değişiklikleri takip etme
   const [todos, setTodos] = useState(
     localStorage.getItem("todos")
       ? JSON.parse(localStorage.getItem("todos"))
       : []
   );
-  
+
+  //data bilgisine ulaşma
   const data = useRef();
 
+  /* todo ekleme fonksiyonu  */
   const addTodos = () => {
     const inputText = data.current.value.trim();
     if (inputText === "") return null;
 
     data.current.value = "";
     data.current.focus();
+    /*todo değişkenlerinin tanımı*/
     const newTodo = {
       id: todos.length + 1,
       text: inputText,
@@ -29,7 +31,7 @@ export const Container = () => {
 
     setTodos((prev) => [...prev, newTodo]);
   };
-
+  /* tamamlanmış todo */
   const toggle = (id) => {
     setTodos((prev) =>
       prev.map((todo) => {
@@ -47,14 +49,14 @@ export const Container = () => {
       return prev.filter((todo) => todo.id !== id);
     });
   };
-
+  /* local storage a kayıt */
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
- //counts
-  const activeCount = todos.filter(todo => !todo.completed).length;
-  const completedCount = todos.filter(todo => todo.completed).length;
+  //counts
+  const activeCount = todos.filter((todo) => !todo.completed).length;
+  const completedCount = todos.filter((todo) => todo.completed).length;
 
   return (
     <div className="container">
@@ -73,15 +75,17 @@ export const Container = () => {
           <Title title="Tasks to do " count={activeCount} />
 
           {/* Todos */}
-          {todos.filter(todo => !todo.completed).map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              toggle={toggle}
-              deleteTodo={deleteTodo}
-              completed={false}
-            />
-          ))}
+          {todos
+            .filter((todo) => !todo.completed)
+            .map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                toggle={toggle}
+                deleteTodo={deleteTodo}
+                completed={false}
+              />
+            ))}
         </>
       )}
 

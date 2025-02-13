@@ -13,5 +13,6 @@ body{
   max-height: 1024px;
   color: aliceblue;
   position: relative;
+  margin: 0 auto;
 
 }
